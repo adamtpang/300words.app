@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>300words — Write 300 words a day. Every day.</title>
+<meta name="description" content="A minimalist daily-writing habit. 300 words is about ten minutes — small enough to never skip, big enough to matter. Build the habit. Keep the streak. Private by default." />
+<link rel="canonical" href="https://300words.app/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://300words.app/" />
+<meta property="og:title" content="300words — Write 300 words a day. Every day." />
+<meta property="og:description" content="A minimalist daily-writing habit. 300 words is about ten minutes — small enough to never skip, big enough to matter." />
+<meta property="og:site_name" content="300words" />
+<meta property="og:image" content="https://300words.app/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="300words — Write 300 words a day. Every day." />
+<meta name="twitter:description" content="A minimalist daily-writing habit. Small enough to never skip, big enough to matter." />
+<meta name="theme-color" content="#FBF7F0" />
+
+<!-- Favicon: inline SVG data-URI, "3" set in a serif on paper -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23FBF7F0'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='700' text-anchor='middle' fill='%23B34A2F'%3E3%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#FBF7F0;
+    --paper-2:#F5EFE4;
+    --paper-3:#EFE7D8;
+    --ink:#1C1917;
+    --ink-soft:#403A34;
+    --ink-mute:#6B625A;
+    --accent:#B34A2F;
+    --accent-deep:#8F3721;
+    --accent-tint:#E8CFC3;
+    --rule:#D9CFBE;
+    --rule-soft:#E7DECF;
+    --gold:#9A7B3F;
+
+    --serif-display:"Fraunces",Georgia,"Times New Roman",serif;
+    --serif-body:"Newsreader",Georgia,"Times New Roman",serif;
+
+    --pad:clamp(1.25rem,5vw,4.5rem);
+    --shadow:0 1px 0 rgba(28,25,23,.04), 0 18px 40px -24px rgba(28,25,23,.28);
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    margin:0;
+    background-color:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif-body);
+    font-size:clamp(1.02rem,.55vw + .9rem,1.18rem);
+    line-height:1.66;
+    font-weight:380;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(circle at 18% 22%, rgba(179,74,47,.035), transparent 42%),
+      radial-gradient(circle at 88% 78%, rgba(154,123,63,.045), transparent 46%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.028'/%3E%3C/svg%3E");
+  }
+
+  ::selection{background:var(--accent-tint);color:var(--ink)}
+
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block;max-width:100%}
+  h1,h2,h3{font-family:var(--serif-display);font-weight:560;line-height:1.02;letter-spacing:-.018em;margin:0;color:var(--ink)}
+  p{margin:0}
+
+  .wrap{max-width:74rem;margin-inline:auto;padding-inline:var(--pad)}
+
+  :where(a,button,input,summary):focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:3px;
+  }
+
+  .btn{
+    --bg:var(--accent);--fg:var(--paper);
+    display:inline-flex;align-items:center;gap:.55em;
+    font-family:var(--serif-body);
+    font-size:1rem;font-weight:500;letter-spacing:.01em;
+    padding:.72em 1.35em;
+    color:var(--fg);background:var(--bg);
+    border:1px solid var(--accent-deep);
+    border-radius:2px;
+    cursor:pointer;
+    position:relative;
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease), background-color .3s;
+    box-shadow:0 1px 0 rgba(255,255,255,.25) inset, 0 10px 22px -14px rgba(143,55,33,.9);
+    white-space:nowrap;
+  }
+  .btn .arrow{transition:transform .35s var(--ease)}
+  .btn:hover{background:var(--accent-deep);transform:translateY(-2px)}
+  .btn:hover .arrow{transform:translateX(4px)}
+  .btn:active{transform:translateY(0)}
+
+  .btn--ghost{
+    --bg:transparent;--fg:var(--ink);
+    border:1px solid var(--rule);
+    box-shadow:none;
+  }
+  .btn--ghost:hover{background:var(--paper-2);border-color:var(--ink-mute);color:var(--ink)}
+
+  .kicker{
+    font-family:var(--serif-body);
+    font-size:.74rem;font-weight:500;
+    text-transform:uppercase;letter-spacing:.28em;
+    color:var(--accent);
+    display:inline-flex;align-items:center;gap:.7em;
+  }
+  .kicker::before{content:"";width:1.6rem;height:1px;background:var(--accent);opacity:.6}
+
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--paper) 82%, transparent);
+    backdrop-filter:saturate(140%) blur(10px);
+    -webkit-backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid transparent;
+    transition:border-color .4s, background-color .4s;
+  }
+  .nav.is-scrolled{border-bottom-color:var(--rule);background:color-mix(in srgb, var(--paper) 92%, transparent)}
+  .nav__inner{display:flex;align-items:center;justify-content:space-between;height:4.7rem}
+  .wordmark{
+    font-family:var(--serif-display);
+    font-weight:600;font-size:1.34rem;letter-spacing:-.02em;
+    display:inline-flex;align-items:baseline;gap:.06em;
+    color:var(--ink);
+  }
+  .wordmark b{color:var(--accent);font-weight:600}
+  .wordmark .dot{color:var(--ink-mute);font-weight:400}
+  .nav__actions{display:flex;align-items:center;gap:1.4rem}
+  .nav__links{display:flex;gap:1.6rem;align-items:center}
+  .nav__links a{
+    font-size:.98rem;color:var(--ink-soft);position:relative;padding-block:.2em;
+  }
+  .nav__links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--accent);transition:width .3s var(--ease)}
+  .nav__links a:hover{color:var(--ink)}
+  .nav__links a:hover::after{width:100%}
+  @media (max-width:760px){.nav__links{display:none}.nav__inner{height:4.1rem}}
+
+  .hero{position:relative;padding-top:clamp(3.5rem,9vw,7rem);padding-bottom:clamp(3rem,7vw,5.5rem)}
+  .hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  @media (max-width:900px){.hero__grid{grid-template-columns:1fr;gap:2.6rem}}
+
+  .hero h1{
+    font-size:clamp(2.9rem,7.4vw,5.5rem);
+    font-weight:540;
+    letter-spacing:-.028em;
+    margin-top:1.4rem;
+  }
+  .hero h1 em{font-style:italic;font-weight:420;color:var(--accent)}
+  .hero h1 .u{position:relative;white-space:nowrap}
+  .hero h1 .u::after{
+    content:"";position:absolute;left:-.02em;right:-.02em;bottom:.06em;height:.09em;
+    background:var(--accent);opacity:.32;border-radius:2px;
+    transform:scaleX(0);transform-origin:left;
+    animation:underscore 1.1s .5s var(--ease) forwards;
+  }
+  @keyframes underscore{to{transform:scaleX(1)}}
+
+  .hero__sub{
+    font-size:clamp(1.12rem,1vw + .95rem,1.32rem);
+    color:var(--ink-soft);
+    max-width:32rem;margin-top:1.5rem;line-height:1.55;
+    font-weight:360;
+  }
+  .hero__cta{display:flex;align-items:center;gap:1.1rem;margin-top:2.2rem;flex-wrap:wrap}
+  .trust{
+    margin-top:1.9rem;
+    font-size:.92rem;color:var(--ink-mute);
+    display:flex;flex-wrap:wrap;gap:.55rem 1.1rem;align-items:center;
+    font-style:italic;
+  }
+  .trust span{display:inline-flex;align-items:center;gap:.5em;white-space:nowrap}
+  .trust .tick{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none}
+
+  .sheet{
+    position:relative;
+    background:linear-gradient(180deg,#fff, #FCF9F2);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:1.6rem 1.6rem 1.4rem;
+    transform:rotate(1.1deg);
+    transition:transform .6s var(--ease);
+  }
+  .sheet:hover{transform:rotate(0deg)}
+  .sheet::before{
+    content:"";position:absolute;left:1.4rem;right:1.4rem;top:-1px;height:3px;
+    background:repeating-linear-gradient(90deg,var(--accent-tint) 0 6px,transparent 6px 13px);
+    opacity:.55;
+  }
+  .sheet__head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--rule-soft);padding-bottom:.7rem;margin-bottom:.9rem}
+  .sheet__date{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute)}
+  .sheet__streak{font-size:.85rem;color:var(--accent);font-weight:500;font-family:var(--serif-body)}
+  .sheet__body{
+    font-family:var(--serif-body);
+    font-size:1.02rem;line-height:1.7;color:var(--ink-soft);
+    min-height:8.4rem;
+  }
+  .sheet__body .drop{
+    float:left;font-family:var(--serif-display);font-weight:600;
+    font-size:3.1rem;line-height:.8;padding:.06em .12em 0 0;color:var(--accent);
+  }
+  .caret{display:inline-block;width:2px;height:1.05em;background:var(--ink);vertical-align:-2px;margin-left:1px;animation:blink 1.05s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){.caret{animation:none}}
+
+  .sheet__foot{margin-top:1.05rem;padding-top:.85rem;border-top:1px solid var(--rule-soft)}
+  .meter{display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:.82rem;color:var(--ink-mute);margin-bottom:.5rem}
+  .meter b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .meter .goalhit{color:var(--accent);font-weight:600}
+  .bar{height:6px;background:var(--paper-3);border-radius:99px;overflow:hidden;border:1px solid var(--rule-soft)}
+  .bar__fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-deep));border-radius:99px;transition:width .4s var(--ease)}
+
+  .stamp{
+    position:absolute;right:-.6rem;bottom:-.9rem;
+    width:5.4rem;height:5.4rem;border-radius:50%;
+    border:1.5px solid var(--accent);color:var(--accent);
+    display:grid;place-items:center;text-align:center;
+    font-family:var(--serif-display);font-weight:600;line-height:1;
+    background:var(--paper);
+    transform:rotate(-9deg);
+    box-shadow:0 8px 20px -14px rgba(143,55,33,.7);
+    opacity:0;
+  }
+  .stamp.show{animation:stampIn .5s var(--ease) forwards}
+  @keyframes stampIn{from{opacity:0;transform:rotate(-9deg) scale(1.5)}to{opacity:.92;transform:rotate(-9deg) scale(1)}}
+  .stamp small{display:block;font-family:var(--serif-body);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;margin-top:.15em;font-weight:500}
+  .stamp .big{font-size:1.02rem}
+
+  section{position:relative}
+  .band{padding-block:clamp(3.4rem,8vw,6.5rem)}
+  .rule{height:1px;background:var(--rule);border:0;margin:0}
+  .rule--soft{background:var(--rule-soft)}
+
+  .sechead{max-width:44rem}
+  .sechead h2{font-size:clamp(2rem,4.4vw,3.1rem);margin-top:1rem;letter-spacing:-.022em}
+  .sechead p{color:var(--ink-soft);margin-top:1rem;font-size:1.1rem;max-width:34rem}
+
+  .philosophy{background:var(--paper-2);border-block:1px solid var(--rule)}
+  .philosophy__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  @media (max-width:820px){.philosophy__grid{grid-template-columns:1fr;gap:2rem}}
+  .pull{
+    font-family:var(--serif-display);
+    font-weight:400;font-style:italic;
+    font-size:clamp(1.7rem,3.4vw,2.55rem);
+    line-height:1.24;letter-spacing:-.015em;color:var(--ink);
+    position:relative;padding-left:1.4rem;
+  }
+  .pull::before{content:"";position:absolute;left:0;top:.15em;bottom:.15em;width:3px;background:var(--accent);border-radius:2px}
+  .pull b{font-weight:600;font-style:normal;color:var(--accent)}
+  .philosophy__body p + p{margin-top:1.1rem}
+  .philosophy__body{color:var(--ink-soft)}
+  .philosophy__body h2{font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.02em}
+  .philosophy__body .lead{font-size:1.16rem;color:var(--ink);margin-top:1.1rem}
+
+  .scale{
+    display:flex;align-items:stretch;gap:0;margin-top:1.8rem;
+    border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--paper);
+    font-family:var(--serif-body);
+  }
+  .scale div{flex:1;padding:.85rem 1rem;text-align:center;border-right:1px solid var(--rule-soft)}
+  .scale div:last-child{border-right:0}
+  .scale .n{font-family:var(--serif-display);font-weight:600;font-size:1.5rem;display:block;color:var(--ink)}
+  .scale .mid{background:var(--accent);color:var(--paper)}
+  .scale .mid .n{color:var(--paper)}
+  .scale small{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute)}
+  .scale .mid small{color:var(--accent-tint)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.4rem,3vw,2.6rem);margin-top:3rem;counter-reset:step}
+  @media (max-width:820px){.steps{grid-template-columns:1fr;gap:2rem}}
+  .step{position:relative;padding-top:2.2rem}
+  .step::before{
+    counter-increment:step;content:counter(step,decimal-leading-zero);
+    position:absolute;top:0;left:0;
+    font-family:var(--serif-display);font-weight:300;font-size:2.2rem;color:var(--accent);
+    letter-spacing:-.02em;
+  }
+  .step::after{content:"";position:absolute;top:.55rem;left:3rem;right:0;height:1px;background:var(--rule)}
+  @media (max-width:820px){.step::after{display:none}}
+  .step h3{font-size:1.34rem;margin-top:.6rem;font-weight:560}
+  .step p{color:var(--ink-soft);margin-top:.55rem;font-size:1.02rem}
+
+  .features{background:var(--paper-2);border-block:1px solid var(--rule)}
+  .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:3rem;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+  @media (max-width:860px){.fgrid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:540px){.fgrid{grid-template-columns:1fr}}
+  .feat{
+    background:var(--paper);padding:2rem 1.7rem;
+    display:flex;flex-direction:column;gap:.7rem;
+    transition:background-color .3s;
+    position:relative;
+  }
+  .feat:hover{background:var(--paper-3)}
+  .feat__ico{width:2.1rem;height:2.1rem;color:var(--accent)}
+  .feat__ico svg{width:100%;height:100%}
+  .feat h3{font-size:1.2rem;font-weight:560;letter-spacing:-.01em}
+  .feat p{color:var(--ink-soft);font-size:1rem;line-height:1.55}
+  .feat .idx{position:absolute;top:1.4rem;right:1.5rem;font-family:var(--serif-body);font-size:.72rem;color:var(--ink-mute);letter-spacing:.14em}
+
+  .closing{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+  .closing::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      radial-gradient(circle at 12% 120%, rgba(179,74,47,.5), transparent 45%),
+      radial-gradient(circle at 90% -20%, rgba(154,123,63,.28), transparent 45%);
+    opacity:.9;
+  }
+  .closing .wrap{position:relative}
+  .closing__inner{text-align:center;max-width:40rem;margin-inline:auto}
+  .closing .kicker{color:var(--accent-tint)}
+  .closing .kicker::before{background:var(--accent-tint)}
+  .closing h2{color:var(--paper);font-size:clamp(2.2rem,5.2vw,3.6rem);margin-top:1.1rem}
+  .closing h2 em{font-style:italic;font-weight:380;color:var(--accent-tint)}
+  .closing p{color:#D9CFC2;margin-top:1.2rem;font-size:1.16rem;max-width:30rem;margin-inline:auto}
+  .closing .btn{margin-top:2.1rem;--bg:var(--accent);--fg:#fff;font-size:1.06rem;padding:.85em 1.7em}
+  .closing .btn:hover{background:#c8543a}
+  .closing .microcopy{margin-top:1.1rem;font-size:.88rem;color:#B7ADA0;font-style:italic}
+
+  .foot{padding-block:clamp(2.6rem,5vw,3.6rem)}
+  .foot__top{display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap}
+  .foot__brand .wordmark{font-size:1.4rem}
+  .foot__brand p{color:var(--ink-mute);margin-top:.6rem;font-style:italic;max-width:22rem}
+  .foot__links{display:flex;gap:1.7rem;flex-wrap:wrap}
+  .foot__links a{color:var(--ink-soft);font-size:.98rem;position:relative}
+  .foot__links a:hover{color:var(--accent)}
+  .foot__bottom{margin-top:2.4rem;padding-top:1.5rem;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;color:var(--ink-mute);font-size:.9rem}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal[data-d="1"]{transition-delay:.08s}
+  .reveal[data-d="2"]{transition-delay:.16s}
+  .reveal[data-d="3"]{transition-delay:.24s}
+  .reveal[data-d="4"]{transition-delay:.32s}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .hero h1 .u::after{animation:none;transform:scaleX(1)}
+    .sheet{transform:none}
+    .stamp.show{animation:none;opacity:.92}
+  }
+
+  .skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6em 1em;z-index:100;border-radius:0 0 4px 0}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="wordmark" href="#top" aria-label="300words home"><b>300</b>words<span class="dot">.</span></a>
+    <nav class="nav__actions" aria-label="Primary">
+      <div class="nav__links">
+        <a href="#why">Why 300</a>
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+      </div>
+      <a class="btn" href="/app">Start writing <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<span id="top"></span>
+
+<section class="hero band" aria-labelledby="hero-h">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <span class="kicker reveal">A daily writing practice</span>
+      <h1 id="hero-h" class="reveal" data-d="1">
+        Write <em>300 words</em><br>a day. <span class="u">Every day.</span>
+      </h1>
+      <p class="hero__sub reveal" data-d="2">
+        Not a novel. Not a to-do list. Just three hundred honest words to clear
+        your head and keep your thinking sharp &mdash; a habit small enough to never skip.
+      </p>
+      <div class="hero__cta reveal" data-d="3">
+        <a class="btn" href="/app">Start writing <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <a class="btn btn--ghost" href="#why">Why 300, exactly?</a>
+      </div>
+      <div class="trust reveal" data-d="4">
+        <span><i class="tick" aria-hidden="true"></i> ~10 minutes a day</span>
+        <span><i class="tick" aria-hidden="true"></i> Private by default</span>
+        <span><i class="tick" aria-hidden="true"></i> No AI writing it for you</span>
+      </div>
+    </div>
+
+    <div class="hero__demo reveal" data-d="2">
+      <div class="sheet" aria-hidden="true">
+        <div class="sheet__head">
+          <span class="sheet__date">Today's page</span>
+          <span class="sheet__streak">&#9670; 14-day streak</span>
+        </div>
+        <div class="sheet__body">
+          <p><span class="drop">T</span><span id="demoText"></span><span class="caret" id="caret"></span></p>
+        </div>
+        <div class="sheet__foot">
+          <div class="meter">
+            <span><b id="wc">0</b> / 300 words</span>
+            <span id="wcState">keep going&hellip;</span>
+          </div>
+          <div class="bar"><div class="bar__fill" id="fill"></div></div>
+        </div>
+        <div class="stamp" id="stamp">
+          <div><span class="big">300</span><small>Done</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<section class="band philosophy" id="why" aria-labelledby="why-h">
+  <div class="wrap philosophy__grid">
+    <div>
+      <span class="kicker reveal">The sweet spot</span>
+      <p class="pull reveal" data-d="1">
+        &ldquo;Three hundred words is <b>small enough to never skip</b>, and <b>big enough to matter</b>.&rdquo;
+      </p>
+      <div class="scale reveal" data-d="2" aria-hidden="true">
+        <div><span class="n">1</span><small>a sentence</small></div>
+        <div class="mid"><span class="n">300</span><small>a page</small></div>
+        <div><span class="n">2k+</span><small>an essay</small></div>
+      </div>
+    </div>
+    <div class="philosophy__body">
+      <h2 id="why-h" class="reveal">Why it works</h2>
+      <p class="lead reveal" data-d="1">
+        Most writing habits die because the bar is too high. A blank page that expects a
+        masterpiece is easy to avoid forever.
+      </p>
+      <p class="reveal" data-d="2">
+        Three hundred words is roughly one page &mdash; about ten minutes. Short enough that you
+        can always find the time, long enough to get past the throat-clearing and reach the
+        thought you didn't know you had. Do it once and it's a nice morning. Do it every day
+        and it compounds into something real: a clearer head, sharper thinking, and a written
+        record of the person you were becoming.
+      </p>
+      <p class="reveal" data-d="3">
+        No prompts to perform for. No audience. No algorithm. Just you, a page, and a number
+        to hit before you close the tab.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band wrap" id="how" aria-labelledby="how-h">
+  <div class="sechead">
+    <span class="kicker reveal">How it works</span>
+    <h2 id="how-h" class="reveal" data-d="1">Three steps. Then repeat<br>tomorrow.</h2>
+    <p class="reveal" data-d="2">No setup, no configuration, no streak-anxiety dashboards. Open the page and write.</p>
+  </div>
+  <div class="steps">
+    <article class="step reveal" data-d="1">
+      <h3>Open a blank page</h3>
+      <p>One clean sheet, one cursor. No formatting toolbars, no notifications, nothing to tweak. Just somewhere quiet to think out loud.</p>
+    </article>
+    <article class="step reveal" data-d="2">
+      <h3>Write until 300</h3>
+      <p>A calm counter fills as you type. Whatever's on your mind counts &mdash; a worry, a plan, a memory, a rant. Stop when the goal is met.</p>
+    </article>
+    <article class="step reveal" data-d="3">
+      <h3>Keep the streak alive</h3>
+      <p>Hit 300 and today is marked. Come back tomorrow and the streak grows. Miss a day &mdash; it's fine, the page is still here for you.</p>
+    </article>
+  </div>
+</section>
+
+<hr class="rule rule--soft" />
+
+<section class="band features" id="features" aria-labelledby="feat-h">
+  <div class="wrap">
+    <div class="sechead">
+      <span class="kicker reveal">What's inside</span>
+      <h2 id="feat-h" class="reveal" data-d="1">Everything you need.<br>Nothing you don't.</h2>
+      <p class="reveal" data-d="2">Built to get out of the way. The best writing tool is the one you forget you're using.</p>
+    </div>
+
+    <div class="fgrid">
+      <article class="feat reveal" data-d="1">
+        <span class="idx">01</span>
+        <span class="feat__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V6"/><path d="M4 20l4-2 4 2 4-2 4 2V6l-4-2-4 2-4-2-4 2"/><path d="M8 4v14M12 6v14M16 4v14"/></svg>
+        </span>
+        <h3>Daily streak tracking</h3>
+        <p>Every finished page adds a day. Watch the chain grow and feel the quiet pull to not break it.</p>
+      </article>
+
+      <article class="feat reveal" data-d="2">
+        <span class="idx">02</span>
+        <span class="feat__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h9"/></svg>
+        </span>
+        <h3>Distraction-free editor</h3>
+        <p>No menus, no styling, no blinking badges. A warm page and a cursor &mdash; everything else fades away.</p>
+      </article>
+
+      <article class="feat reveal" data-d="3">
+        <span class="idx">03</span>
+        <span class="feat__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        </span>
+        <h3>Private &amp; yours</h3>
+        <p>Your words are yours alone. Private by default, never sold, never mined, never used to train anything.</p>
+      </article>
+
+      <article class="feat reveal" data-d="1">
+        <span class="idx">04</span>
+        <span class="feat__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 12l4 2"/><path d="M12 7v5"/></svg>
+        </span>
+        <h3>A goal that fills as you type</h3>
+        <p>A gentle counter climbs toward 300 and marks the moment you arrive &mdash; momentum you can see.</p>
+      </article>
+
+      <article class="feat reveal" data-d="2">
+        <span class="idx">05</span>
+        <span class="feat__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        </span>
+        <h3>Gentle daily reminder</h3>
+        <p>One quiet nudge at the time you choose. A tap on the shoulder, never a nag or a guilt trip.</p>
+      </article>
+
+      <article class="feat reveal" data-d="3">
+        <span class="idx">06</span>
+        <span class="feat__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6a2 2 0 0 1 2-2h8l6 6v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 4v6h6"/><path d="M8 15h8M8 18h5"/></svg>
+        </span>
+        <h3>Your writing history</h3>
+        <p>Every page is kept and searchable. Scroll back through months of thinking and watch yourself change.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="band closing" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__inner">
+      <span class="kicker reveal">Ready when you are</span>
+      <h2 id="close-h" class="reveal" data-d="1">The page is blank.<br><em>Fill three hundred of it.</em></h2>
+      <p class="reveal" data-d="2">Start today. Come back tomorrow. That's the whole method &mdash; and it works.</p>
+      <a class="btn reveal" data-d="3" href="/app">Start writing <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      <p class="microcopy reveal" data-d="3">Free to start &middot; Nothing to install &middot; Your words stay yours</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <a class="wordmark" href="#top" aria-label="300words home"><b>300</b>words<span class="dot">.</span></a>
+        <p>Write 300 words a day. Every day. The rest takes care of itself.</p>
+      </div>
+      <nav class="foot__links" aria-label="Footer">
+        <a href="/about">About</a>
+        <a href="/privacy">Privacy</a>
+        <a href="https://x.com" rel="noopener">Twitter / X</a>
+        <a href="/app">Start writing</a>
+      </nav>
+    </div>
+    <div class="foot__bottom">
+      <span>&copy; 2026 300words</span>
+      <span>Made for people who think by writing.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var nav = document.getElementById("nav");
+  var onScroll = function(){
+    if(window.scrollY > 8){ nav.classList.add("is-scrolled"); }
+    else{ nav.classList.remove("is-scrolled"); }
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, {passive:true});
+
+  var revs = document.querySelectorAll(".reveal");
+  if(reduce || !("IntersectionObserver" in window)){
+    revs.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:.14, rootMargin:"0px 0px -8% 0px"});
+    revs.forEach(function(el){ io.observe(el); });
+  }
+
+  var text = document.getElementById("demoText");
+  var wc = document.getElementById("wc");
+  var fill = document.getElementById("fill");
+  var stamp = document.getElementById("stamp");
+  var state = document.getElementById("wcState");
+  var caret = document.getElementById("caret");
+
+  if(text && wc && fill){
+    var passage = "his morning felt heavier than most, so I did the only thing that ever untangles it — I opened the page and started writing before I could talk myself out of it. Nothing polished, just what was actually there: the deadline I keep avoiding, the call I owe my brother, a small good thing from yesterday I'd already forgotten. By the third line my shoulders had dropped an inch. There is a particular kind of quiet that only shows up once the noise in your head has somewhere else to go. Three hundred words later, the day looked survivable again.";
+    var GOAL = 300;
+    var displayWords = passage.trim().split(/\s+/).length;
+
+    var i = 0;
+    function setCounts(shownChars){
+      var typed = passage.slice(0, shownChars);
+      var w = typed.trim() ? typed.trim().split(/\s+/).length : 0;
+      var scaled = Math.min(GOAL, Math.round(w * (GOAL / displayWords)));
+      wc.textContent = scaled;
+      var pct = Math.min(100, (scaled/GOAL)*100);
+      fill.style.width = pct + "%";
+      if(scaled >= GOAL){
+        state.textContent = "goal reached ✓";
+        state.className = "goalhit";
+        stamp.classList.add("show");
+        if(caret){ caret.style.display = "none"; }
+      } else {
+        state.textContent = "keep going…";
+      }
+    }
+
+    function type(){
+      if(i <= passage.length){
+        text.textContent = passage.slice(0, i);
+        setCounts(i);
+        var ch = passage.charAt(i-1);
+        var delay = 18 + Math.random()*30;
+        if(ch === "." || ch === "," || ch === "—"){ delay = 260; }
+        i++;
+        setTimeout(type, delay);
+      }
+    }
+
+    if(reduce){
+      text.textContent = passage;
+      setCounts(passage.length);
+    } else {
+      setTimeout(type, 900);
+    }
+  }
+})();
+</script>
+</body>
+</html>
