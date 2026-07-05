@@ -1,0 +1,15 @@
+# 300words (300words.app)
+
+> A minimalist daily-writing habit: write 300 words a day, every day, and keep the streak alive.
+
+300words is a single-purpose writing tool built on one idea: 300 words is about ten minutes, small enough to never skip and big enough to matter. You open a blank page, write or dictate until you hit 300, and the day is marked. Come back tomorrow and the streak grows. It is for people who think by writing and want a habit that compounds, not another app to manage.
+
+The whole thing is a static site with no accounts and no backend. Your words stay on your device (browser localStorage), never sold or used to train anything. The app supports built-in dictation, pairs with Handy for hold-to-talk, tracks a 30-day history, and can export a page to Markdown or copy it out to Substack.
+
+## Key links
+- [Home](https://300words.app/): the landing page explaining why 300 words, how it works, and what is inside.
+- [The app](https://300words.app/app): the actual writing surface: a distraction-free page, a live word counter to 300, streak tracking, dictation, history, and Markdown export.
+
+## About
+- Part of adam.inc, the internet portfolio of Adam Pangelinan (Anchor Marianas LLC).
+- Builder: https://adampang.com
