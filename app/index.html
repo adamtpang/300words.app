@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Today's page — 300words</title>
+<meta name="description" content="Speak or type 300 words. Keep the streak. Your words stay on this device." />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#FBF7F0" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23FBF7F0'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='700' text-anchor='middle' fill='%23B34A2F'%3E3%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#FBF7F0;
+    --paper-2:#F5EFE4;
+    --paper-3:#EFE7D8;
+    --ink:#1C1917;
+    --ink-soft:#403A34;
+    --ink-mute:#6B625A;
+    --accent:#B34A2F;
+    --accent-deep:#8F3721;
+    --accent-tint:#E8CFC3;
+    --rule:#D9CFBE;
+    --rule-soft:#E7DECF;
+
+    --serif-display:"Fraunces",Georgia,"Times New Roman",serif;
+    --serif-body:"Newsreader",Georgia,"Times New Roman",serif;
+    --shadow:0 1px 0 rgba(28,25,23,.04), 0 18px 40px -24px rgba(28,25,23,.28);
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+
+  body{
+    margin:0;
+    background-color:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif-body);
+    font-size:1.04rem;
+    line-height:1.66;
+    font-weight:380;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    background-image:
+      radial-gradient(circle at 18% 22%, rgba(179,74,47,.035), transparent 42%),
+      radial-gradient(circle at 88% 78%, rgba(154,123,63,.045), transparent 46%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.028'/%3E%3C/svg%3E");
+  }
+
+  ::selection{background:var(--accent-tint);color:var(--ink)}
+  a{color:inherit;text-decoration:none}
+  h1,h2{font-family:var(--serif-display);font-weight:560;line-height:1.05;letter-spacing:-.018em;margin:0}
+  p{margin:0}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+
+  :where(a,button,input,textarea,summary):focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:3px;
+  }
+
+  .wrap{max-width:46rem;margin-inline:auto;padding-inline:clamp(1rem,4vw,2rem)}
+
+  /* ---------- top bar ---------- */
+  .bar{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:saturate(140%) blur(10px);
+    -webkit-backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid var(--rule-soft);
+  }
+  .bar__inner{display:flex;align-items:center;justify-content:space-between;height:3.9rem;gap:1rem}
+  .wordmark{
+    font-family:var(--serif-display);
+    font-weight:600;font-size:1.18rem;letter-spacing:-.02em;
+    display:inline-flex;align-items:baseline;gap:.06em;
+  }
+  .wordmark b{color:var(--accent);font-weight:600}
+  .wordmark .dot{color:var(--ink-mute);font-weight:400}
+  .bar__right{display:flex;align-items:center;gap:1.1rem}
+  .streak{
+    font-size:.86rem;color:var(--ink-mute);
+    display:inline-flex;align-items:center;gap:.45em;white-space:nowrap;
+  }
+  .streak .diamond{color:var(--accent);font-style:normal}
+  .streak.lit{color:var(--accent);font-weight:500}
+  .bar__hist{font-size:.9rem;color:var(--ink-soft);border-bottom:1px solid var(--rule);padding-bottom:.1em}
+  .bar__hist:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* ---------- page sheet ---------- */
+  main{padding-block:clamp(1.4rem,4.5vw,3.2rem)}
+
+  .backline{
+    display:none;
+    margin-bottom:1rem;font-size:.92rem;color:var(--ink-mute);font-style:italic;
+    align-items:center;gap:.8em;flex-wrap:wrap;
+  }
+  .backline.show{display:flex}
+  .backline button{color:var(--accent);font-weight:500;font-style:normal;border-bottom:1px solid var(--accent-tint)}
+  .backline button:hover{border-color:var(--accent)}
+
+  .sheet{
+    position:relative;
+    background:linear-gradient(180deg,#fff,#FCF9F2);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:1.5rem 1.5rem 1.3rem;
+    transition:border-color .3s, box-shadow .3s;
+  }
+  .sheet::before{
+    content:"";position:absolute;left:1.4rem;right:1.4rem;top:-1px;height:3px;
+    background:repeating-linear-gradient(90deg,var(--accent-tint) 0 6px,transparent 6px 13px);
+    opacity:.55;
+  }
+  .sheet:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(179,74,47,.12), var(--shadow)}
+
+  .sheet__head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-bottom:1px solid var(--rule-soft);padding-bottom:.7rem;margin-bottom:.4rem;flex-wrap:wrap}
+  .sheet__date{font-family:var(--serif-display);font-weight:560;font-size:1.14rem;letter-spacing:-.01em}
+  .sheet__year{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute)}
+
+  #page{
+    display:block;width:100%;
+    min-height:min(46vh,26rem);
+    border:0;outline:none;resize:none;
+    background:transparent;
+    font-family:var(--serif-body);
+    font-size:1.09rem;line-height:1.78;font-weight:380;color:var(--ink);
+    padding:.6rem 0 .4rem;
+    caret-color:var(--accent);
+  }
+  #page::placeholder{color:var(--ink-mute);opacity:.75;font-style:italic}
+  #page[readonly]{color:var(--ink-soft)}
+  #page:focus-visible{outline:none} /* focus shown on .sheet:focus-within instead */
+
+  .sheet__foot{margin-top:.6rem;padding-top:.85rem;border-top:1px solid var(--rule-soft)}
+  .meter{display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:.84rem;color:var(--ink-mute);margin-bottom:.5rem}
+  .meter b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .goalhit{color:var(--accent) !important;font-weight:600}
+  .bar-track{height:6px;background:var(--paper-3);border-radius:99px;overflow:hidden;border:1px solid var(--rule-soft)}
+  .bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-deep));border-radius:99px;transition:width .4s var(--ease)}
+
+  .stamp{
+    position:absolute;right:-.6rem;bottom:-.9rem;
+    width:5.2rem;height:5.2rem;border-radius:50%;
+    border:1.5px solid var(--accent);color:var(--accent);
+    display:grid;place-items:center;text-align:center;
+    font-family:var(--serif-display);font-weight:600;line-height:1;
+    background:var(--paper);
+    transform:rotate(-9deg);
+    box-shadow:0 8px 20px -14px rgba(143,55,33,.7);
+    opacity:0;pointer-events:none;
+  }
+  .stamp.show{animation:stampIn .5s var(--ease) forwards}
+  @keyframes stampIn{from{opacity:0;transform:rotate(-9deg) scale(1.5)}to{opacity:.92;transform:rotate(-9deg) scale(1)}}
+  .stamp small{display:block;font-family:var(--serif-body);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;margin-top:.15em;font-weight:500}
+  .stamp .big{font-size:1rem}
+
+  /* ---------- actions ---------- */
+  .actions{
+    display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;
+    margin-top:1.4rem;
+  }
+  .abtn{
+    display:inline-flex;align-items:center;gap:.5em;
+    font-size:.95rem;font-weight:500;
+    padding:.55em 1.05em;
+    border:1px solid var(--rule);border-radius:2px;
+    background:var(--paper);
+    color:var(--ink-soft);
+    transition:border-color .25s, background-color .25s, color .25s;
+    white-space:nowrap;
+  }
+  .abtn:hover{border-color:var(--ink-mute);color:var(--ink);background:var(--paper-2)}
+  .abtn--primary{background:var(--accent);border-color:var(--accent-deep);color:var(--paper)}
+  .abtn--primary:hover{background:var(--accent-deep);color:var(--paper)}
+  .abtn svg{width:1em;height:1em;flex:none}
+  .abtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent-deep);color:#fff}
+  .abtn[disabled]{opacity:.5;cursor:not-allowed}
+
+  .recdot{width:.55em;height:.55em;border-radius:50%;background:currentColor;flex:none}
+  [aria-pressed="true"] .recdot{animation:pulse 1.4s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.25}}
+
+  .actions .spacer{flex:1}
+
+  #statusLine{
+    width:100%;
+    font-size:.9rem;color:var(--ink-mute);font-style:italic;
+    min-height:1.3em;margin-top:.35rem;
+  }
+  .heard{color:var(--ink-soft)}
+
+  .tip{
+    margin-top:1.2rem;
+    font-size:.92rem;color:var(--ink-mute);
+    border-left:3px solid var(--accent-tint);
+    padding:.15rem 0 .15rem 1rem;
+    font-style:italic;
+  }
+  .tip a{color:var(--accent);border-bottom:1px solid var(--accent-tint)}
+  .tip a:hover{border-color:var(--accent)}
+
+  .shipbox{margin-top:.8rem;display:none;align-items:center;gap:.6rem;flex-wrap:wrap}
+  .shipbox.show{display:flex}
+  .shipbox input{
+    font:inherit;font-size:.92rem;
+    border:1px solid var(--rule);border-radius:2px;
+    background:#fff;color:var(--ink);
+    padding:.45em .7em;flex:1;min-width:14rem;
+  }
+  .shipbox label{font-size:.86rem;color:var(--ink-mute);width:100%}
+
+  .warn{
+    display:none;margin-top:1rem;
+    font-size:.9rem;color:var(--accent-deep);
+    background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;
+    padding:.6rem .9rem;
+  }
+  .warn.show{display:block}
+
+  /* ---------- history ---------- */
+  .history{margin-top:clamp(2.4rem,6vw,3.6rem);padding-top:1.8rem;border-top:1px solid var(--rule)}
+  .history h2{font-size:1.35rem}
+  .stats{display:flex;gap:2rem;flex-wrap:wrap;margin-top:1rem}
+  .stat .n{font-family:var(--serif-display);font-weight:600;font-size:1.55rem;display:block;letter-spacing:-.02em}
+  .stat small{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+
+  .hgrid{
+    display:flex;align-items:flex-end;gap:4px;
+    margin-top:1.4rem;height:64px;
+  }
+  .hbar{
+    flex:1;min-width:4px;max-width:22px;
+    background:var(--paper-3);
+    border:1px solid var(--rule-soft);
+    border-radius:2px 2px 0 0;
+    padding:0;
+    transition:background-color .25s;
+    align-self:flex-end;
+  }
+  .hbar.filled{background:var(--accent-tint);border-color:var(--accent-tint)}
+  .hbar.done{background:var(--accent);border-color:var(--accent-deep)}
+  .hbar.today{box-shadow:0 0 0 2px var(--paper), 0 0 0 3.5px var(--accent)}
+  .hbar[data-view]{cursor:pointer}
+  .hbar[data-view]:hover{background:var(--accent-deep)}
+  .hlegend{display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-mute);margin-top:.4rem}
+
+  .history__foot{margin-top:1.6rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .linkbtn{font-size:.88rem;color:var(--ink-mute);border-bottom:1px solid var(--rule);padding-bottom:.05em}
+  .linkbtn:hover{color:var(--accent);border-color:var(--accent)}
+
+  footer{padding-block:2.2rem;margin-top:1rem}
+  footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.86rem;color:var(--ink-mute)}
+
+  .skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6em 1em;z-index:100;border-radius:0 0 4px 0}
+  .skip:focus{left:0}
+
+  @media (prefers-reduced-motion:reduce){
+    .stamp.show{animation:none;opacity:.92}
+    [aria-pressed="true"] .recdot{animation:none}
+    .bar-fill{transition:none}
+  }
+  @media (max-width:560px){
+    .bar__hist{display:none}
+    .actions .abtn{font-size:.9rem;padding:.5em .85em}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#page">Skip to the page</a>
+
+<header class="bar">
+  <div class="wrap bar__inner">
+    <a class="wordmark" href="/" aria-label="300words home"><b>300</b>words<span class="dot">.</span></a>
+    <div class="bar__right">
+      <span class="streak" id="streak"><i class="diamond" aria-hidden="true">&#9670;</i> <span id="streakText">start your streak today</span></span>
+      <a class="bar__hist" href="#history">History</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="backline" id="backline">
+    <span id="backlineText">Viewing an older page — read only.</span>
+    <button type="button" id="backBtn">&larr; Back to today</button>
+  </p>
+
+  <div class="sheet">
+    <div class="sheet__head">
+      <span class="sheet__date" id="dateLabel">Today</span>
+      <span class="sheet__year" id="yearLabel"></span>
+    </div>
+
+    <textarea id="page" spellcheck="true" autocomplete="off"
+      aria-label="Today's page — write or dictate here"
+      placeholder="Start talking, or typing. Whatever's in your head counts."></textarea>
+
+    <div class="sheet__foot">
+      <div class="meter">
+        <span><b id="wc">0</b> / 300 words</span>
+        <span id="wcState" aria-live="polite">say it or type it &mdash; it all counts</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" id="fill"></div></div>
+    </div>
+
+    <div class="stamp" id="stamp" aria-hidden="true">
+      <div><span class="big">300</span><small>Done</small></div>
+    </div>
+  </div>
+
+  <div class="actions" id="actions">
+    <button type="button" class="abtn abtn--primary" id="micBtn" aria-pressed="false">
+      <span class="recdot" aria-hidden="true"></span><span id="micLabel">Speak</span>
+    </button>
+    <span class="spacer"></span>
+    <button type="button" class="abtn" id="copyBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+      <span id="copyLabel">Copy</span>
+    </button>
+    <button type="button" class="abtn" id="dlBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
+      .md
+    </button>
+    <button type="button" class="abtn abtn--primary" id="pangaeaBtn">
+      Send to Pangaea
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+    </button>
+    <p id="statusLine"><span id="status" role="status"></span> <span id="interim"></span></p>
+  </div>
+
+  <p class="tip" id="handyTip">
+    Speak your page. This pairs with <a href="https://handy.computer" rel="noopener" target="_blank">Handy</a>:
+    click into the page, hold your hotkey, and talk &mdash; the words land here and the counter climbs
+    (or use the mic button). When you&rsquo;re happy, <strong>Send to Pangaea</strong> hands the page to
+    your blog&rsquo;s <code>/write</code> editor as a seedling draft, ready to title and publish.
+  </p>
+
+  <p class="warn" id="storageWarn">
+    Autosave isn't available in this browser session (private mode?). Your words will be lost when you close the tab &mdash; copy them out before you go.
+  </p>
+
+  <section class="history" id="history" aria-labelledby="hist-h">
+    <h2 id="hist-h">Your last 30 days</h2>
+    <div class="stats">
+      <div class="stat"><span class="n" id="statTotal">0</span><small>words written</small></div>
+      <div class="stat"><span class="n" id="statPages">0</span><small>pages done</small></div>
+      <div class="stat"><span class="n" id="statBest">0</span><small>best streak</small></div>
+    </div>
+    <div class="hgrid" id="hgrid" role="list" aria-label="Word counts for the last 30 days"></div>
+    <div class="hlegend"><span id="legendStart"></span><span>today</span></div>
+    <div class="history__foot">
+      <button type="button" class="linkbtn" id="backupBtn">Back up everything (.json)</button>
+      <span style="font-size:.85rem;color:var(--ink-mute);font-style:italic">Your words never leave this device.</span>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 300words</span>
+    <span>One page a day. Spoken counts.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+var GOAL = 300;
+var KEY = "w300.entries.v1";
+var PANGAEAKEY = "w300.pangaea";
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- storage ---------- */
+var storageOk = true;
+function loadAll(){
+  try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function persist(){
+  try{
+    // Merge with the freshest stored state so a stale tab never clobbers
+    // days written elsewhere. This tab only ever mutates today's entry.
+    var latest;
+    try{ latest = JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e2){ latest = {}; }
+    for(var k in entries){
+      if(Object.prototype.hasOwnProperty.call(entries, k) &&
+         !Object.prototype.hasOwnProperty.call(latest, k)){
+        latest[k] = entries[k];
+      }
+    }
+    if(entries[todayK]) latest[todayK] = entries[todayK];
+    entries = latest;
+    localStorage.setItem(KEY, JSON.stringify(entries));
+    storageOk = true;
+  }
+  catch(e){
+    storageOk = false;
+    document.getElementById("storageWarn").classList.add("show");
+  }
+}
+
+/* ---------- dates ---------- */
+function fmtKey(d){
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
+}
+function keyOffset(n){ var d = new Date(); d.setDate(d.getDate() - n); return fmtKey(d); }
+function keyToDate(k){ var p = k.split("-"); return new Date(+p[0], +p[1]-1, +p[2]); }
+function prettyDate(k){
+  return keyToDate(k).toLocaleDateString("en-US", {weekday:"long", month:"long", day:"numeric"});
+}
+function shortDate(k){
+  return keyToDate(k).toLocaleDateString("en-US", {month:"short", day:"numeric"});
+}
+
+/* ---------- state ---------- */
+var entries = loadAll();
+var todayK = fmtKey(new Date());
+var viewK = todayK;
+
+var page = document.getElementById("page");
+var wc = document.getElementById("wc");
+var wcState = document.getElementById("wcState");
+var fill = document.getElementById("fill");
+var stamp = document.getElementById("stamp");
+var statusEl = document.getElementById("status");
+var prevWords = 0;
+
+function countWords(t){
+  t = t.trim();
+  return t ? t.split(/\s+/).length : 0;
+}
+function isDone(k){ var e = entries[k]; return !!(e && e.words >= GOAL); }
+
+/* ---------- streaks ---------- */
+function currentStreak(){
+  var s = 0;
+  var i = isDone(keyOffset(0)) ? 0 : 1;
+  for(;; i++){
+    if(isDone(keyOffset(i))) s++;
+    else break;
+  }
+  return { n: s, todayDone: isDone(keyOffset(0)) };
+}
+function bestStreak(){
+  var days = Object.keys(entries).filter(isDone).sort();
+  var best = 0, run = 0, prev = null;
+  for(var i = 0; i < days.length; i++){
+    var k = days[i];
+    if(prev && (Date.parse(k) - Date.parse(prev) === 86400000)) run++;
+    else run = 1;
+    if(run > best) best = run;
+    prev = k;
+  }
+  return best;
+}
+function renderStreak(){
+  var st = currentStreak();
+  var el = document.getElementById("streak");
+  var txt = document.getElementById("streakText");
+  if(st.n === 0){
+    el.classList.remove("lit");
+    txt.textContent = "start your streak today";
+  } else if(st.todayDone){
+    el.classList.add("lit");
+    txt.textContent = st.n + "-day streak";
+  } else {
+    el.classList.remove("lit");
+    txt.textContent = st.n + "-day streak — write today to keep it";
+  }
+}
+
+/* ---------- meter / editor ---------- */
+function updateMeter(words){
+  wc.textContent = words;
+  var pct = Math.min(100, (words / GOAL) * 100);
+  fill.style.width = pct + "%";
+  if(words >= GOAL){
+    wcState.textContent = "goal reached ✓";
+    wcState.className = "goalhit";
+    if(!stamp.classList.contains("show")) stamp.classList.add("show");
+  } else {
+    wcState.textContent = words === 0 ? "say it or type it — it all counts" : "keep going…";
+    wcState.className = "";
+    stamp.classList.remove("show");
+    // restart the entrance animation next time the goal is hit
+    void stamp.offsetWidth;
+  }
+}
+
+var saveTimer = null;
+function scheduleSave(){
+  if(saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 400);
+}
+function saveNow(){
+  if(saveTimer){ clearTimeout(saveTimer); saveTimer = null; }
+  if(viewK !== todayK) return; // never write over the archive
+  var t = page.value;
+  var w = countWords(t);
+  if(!t && !entries[todayK]) return; // nothing to save yet
+  var e = entries[todayK] || (entries[todayK] = {});
+  e.text = t; e.words = w; e.updatedAt = Date.now();
+  persist();
+  renderStreak();
+  renderHistory();
+}
+
+function onInput(){
+  if(viewK !== todayK) return;
+  var w = countWords(page.value);
+  var crossed = (w >= GOAL && prevWords < GOAL);
+  prevWords = w;
+  updateMeter(w);
+  if(crossed){
+    var e = entries[todayK] || (entries[todayK] = {});
+    if(!e.doneAt) e.doneAt = Date.now();
+  }
+  scheduleSave();
+}
+page.addEventListener("input", onInput);
+
+/* ---------- view switching (today vs archive) ---------- */
+function renderView(){
+  var e = entries[viewK] || {};
+  var text = e.text || "";
+  var words = e.words || countWords(text);
+  var isToday = (viewK === todayK);
+
+  document.getElementById("dateLabel").textContent = isToday ? "Today — " + prettyDate(viewK) : prettyDate(viewK);
+  document.getElementById("yearLabel").textContent = keyToDate(viewK).getFullYear();
+
+  page.value = text;
+  page.readOnly = !isToday;
+  page.setAttribute("aria-label", isToday ? "Today's page — write or dictate here" : "Page from " + prettyDate(viewK) + ", read only");
+  prevWords = words;
+  updateMeter(words);
+
+  document.getElementById("backline").classList.toggle("show", !isToday);
+  if(!isToday) document.getElementById("backlineText").textContent = "Viewing " + prettyDate(viewK) + " — read only.";
+  document.getElementById("micBtn").style.display = isToday && speechAvailable ? "" : "none";
+  if(!isToday) stopListening();
+}
+document.getElementById("backBtn").addEventListener("click", function(){
+  viewK = todayK;
+  renderView();
+  if(window.matchMedia("(pointer:fine)").matches) page.focus();
+});
+
+/* ---------- day rollover ---------- */
+function checkDay(){
+  var nk = fmtKey(new Date());
+  if(nk !== todayK){
+    saveNow();
+    var wasToday = (viewK === todayK);
+    todayK = nk;
+    if(wasToday){ viewK = nk; renderView(); }
+    renderStreak();
+    renderHistory();
+  }
+}
+setInterval(checkDay, 60000);
+document.addEventListener("visibilitychange", function(){
+  if(document.visibilityState === "visible") checkDay();
+  else saveNow();
+});
+window.addEventListener("pagehide", saveNow);
+
+/* other tabs */
+window.addEventListener("storage", function(ev){
+  if(ev.key === KEY && !document.hasFocus()){
+    entries = loadAll();
+    renderView(); renderStreak(); renderHistory();
+  }
+});
+
+/* ---------- speech (built-in mic; Handy works with no code at all) ---------- */
+var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+var speechAvailable = !!SR;
+var rec = null, wantListening = false, restartTimer = null, restartCount = 0;
+var micBtn = document.getElementById("micBtn");
+var micLabel = document.getElementById("micLabel");
+var interimEl = document.getElementById("interim");
+
+function setStatus(html){ statusEl.innerHTML = html || ""; }
+function setInterim(html){ if(interimEl) interimEl.innerHTML = html || ""; }
+
+function appendText(t){
+  t = t.trim();
+  if(!t) return;
+  var v = page.value;
+  var sep = v && !/\s$/.test(v) ? " " : "";
+  page.value = v + sep + t;
+  page.scrollTop = page.scrollHeight;
+  onInput();
+}
+
+function startListening(){
+  if(!SR || viewK !== todayK) return;
+  wantListening = true;
+  rec = new SR();
+  rec.continuous = true;
+  rec.interimResults = true;
+  rec.lang = navigator.language || "en-US";
+  rec.onresult = function(ev){
+    var interim = "";
+    for(var i = ev.resultIndex; i < ev.results.length; i++){
+      var r = ev.results[i];
+      if(r.isFinal){ appendText(r[0].transcript); restartCount = 0; }
+      else interim += r[0].transcript;
+    }
+    // Interim transcript goes to a NON-live span so it doesn't spam screen
+    // readers on every syllable; discrete messages use setStatus (role=status).
+    setInterim(interim
+      ? 'hearing: <span class="heard">&hellip;' + escapeHtml(interim.slice(-70)) + '</span>'
+      : "");
+  };
+  rec.onend = function(){
+    // Chrome ends sessions on silence/network blips. Resume only if still wanted,
+    // re-checking the flag AT FIRE TIME (a Stop may have landed during the gap),
+    // and cap retries so an unrecoverable error can't loop forever.
+    if(!wantListening){ updateMicUI(false); return; }
+    if(++restartCount > 12){
+      wantListening = false;
+      updateMicUI(false);
+      setStatus("Dictation paused. Click Speak to pick up where you left off.");
+      return;
+    }
+    restartTimer = setTimeout(function(){
+      restartTimer = null;
+      if(wantListening){ try{ rec.start(); }catch(e){} }
+    }, Math.min(250 * restartCount, 2000));
+  };
+  rec.onerror = function(ev){
+    var err = ev.error;
+    if(err === "not-allowed" || err === "service-not-allowed"){
+      wantListening = false;
+      if(document.activeElement === micBtn) page.focus(); // don't drop focus to <body>
+      updateMicUI(false);
+      micBtn.disabled = true;
+      setStatus("Mic blocked by the browser. Handy still works — click into the page and speak.");
+    } else if(err === "network"){
+      wantListening = false; updateMicUI(false);
+      setStatus("Dictation needs a connection. Check your internet, then Speak again.");
+    } else if(err === "audio-capture"){
+      wantListening = false; updateMicUI(false);
+      setStatus("No microphone found. Plug one in (or use Handy), then Speak again.");
+    } else if(err === "no-speech"){
+      setInterim("listening&hellip; (say something!)");
+    }
+  };
+  try{
+    rec.start();
+    updateMicUI(true);
+    setStatus("listening&hellip;");
+    page.focus();
+  }catch(e){
+    // start() throws if a prior session is still tearing down; reflect reality
+    // instead of showing a "listening" UI over a dead recognizer.
+    wantListening = false;
+    updateMicUI(false);
+    setStatus("Couldn't start dictation just now. Try again, or use Handy.");
+  }
+}
+function stopListening(){
+  wantListening = false;
+  if(restartTimer){ clearTimeout(restartTimer); restartTimer = null; }
+  if(rec){ try{ rec.stop(); }catch(e){} }
+  updateMicUI(false);
+  setStatus("");
+  setInterim("");
+}
+function updateMicUI(on){
+  micBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  micLabel.textContent = on ? "Stop" : "Speak";
+}
+micBtn.addEventListener("click", function(){
+  if(micBtn.getAttribute("aria-pressed") === "true") stopListening();
+  else startListening();
+});
+if(!speechAvailable){
+  micBtn.style.display = "none";
+  setStatus("Built-in dictation needs Chrome or Edge — or just use Handy and talk.");
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+/* ---------- export ---------- */
+function exportText(){
+  var e = entries[viewK] || {};
+  var t = (viewK === todayK ? page.value : (e.text || "")).trim();
+  return { title: prettyDate(viewK) + ", " + keyToDate(viewK).getFullYear(), text: t };
+}
+document.getElementById("copyBtn").addEventListener("click", function(){
+  var ex = exportText();
+  if(!ex.text){ setStatus("Nothing to copy yet — the page is blank."); return; }
+  var md = "# " + ex.title + " — 300 words\n\n" + ex.text + "\n";
+  var label = document.getElementById("copyLabel");
+  function ok(){ label.textContent = "Copied ✓"; setTimeout(function(){ label.textContent = "Copy"; }, 1800); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(md).then(ok, function(){ fallbackCopy(md, ok); });
+  } else {
+    fallbackCopy(md, ok);
+  }
+});
+function fallbackCopy(text, ok){
+  var ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); ok(); }catch(e){ setStatus("Copy failed — select the text and copy manually."); }
+  document.body.removeChild(ta);
+}
+document.getElementById("dlBtn").addEventListener("click", function(){
+  var ex = exportText();
+  if(!ex.text){ setStatus("Nothing to download yet — the page is blank."); return; }
+  var md = "# " + ex.title + " — 300 words\n\n" + ex.text + "\n";
+  downloadFile("300words-" + viewK + ".md", md, "text/markdown");
+});
+document.getElementById("backupBtn").addEventListener("click", function(){
+  saveNow();
+  downloadFile("300words-backup-" + todayK + ".json", JSON.stringify(entries, null, 2), "application/json");
+});
+function downloadFile(name, content, type){
+  var blob = new Blob([content], {type: type + ";charset=utf-8"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+}
+
+/* ---------- send to Pangaea ---------- */
+// pangaea.blog (Adam's output repo) has a /write editor that commits posts to
+// GitHub. We hand today's page to it as a seedling: /write reads the ?seed=…
+// param, wraps it in Pangaea's frontmatter, and shows its publish form. Base
+// URL is overridable via localStorage "w300.pangaea" (e.g. a localhost dev URL).
+var PANGAEA_BASE = (function(){
+  try{ return localStorage.getItem(PANGAEAKEY) || "https://pangaea.blog"; }
+  catch(e){ return "https://pangaea.blog"; }
+})();
+function suggestTitle(text){
+  var first = (text.split(/\n/)[0] || "").trim();
+  var sentence = (first.split(/[.!?]/)[0] || first).trim();
+  return sentence.split(/\s+/).slice(0, 9).join(" ");
+}
+document.getElementById("pangaeaBtn").addEventListener("click", function(){
+  var ex = exportText();
+  if(!ex.text){ setStatus("Nothing to send yet — write your page first."); return; }
+  // Copy as a backup in case the pop-up is blocked.
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(ex.text); }
+  var url = PANGAEA_BASE.replace(/\/+$/, "") + "/write?from=300words"
+    + "&title=" + encodeURIComponent(suggestTitle(ex.text))
+    + "&seed=" + encodeURIComponent(ex.text);
+  var w = window.open(url, "_blank", "noopener");
+  setStatus(w
+    ? "Opening Pangaea /write with this page as a seedling…"
+    : "Pop-up blocked — the page is copied; open pangaea.blog/write and paste.");
+});
+
+/* ---------- history ---------- */
+var DAYS = 30;
+function renderHistory(){
+  var grid = document.getElementById("hgrid");
+  grid.innerHTML = "";
+  for(var i = DAYS - 1; i >= 0; i--){
+    var k = keyOffset(i);
+    var e = entries[k];
+    var words = e ? (e.words || 0) : 0;
+    var h = words > 0 ? Math.max(8, Math.round(60 * Math.min(words, GOAL) / GOAL)) : 4;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "hbar" + (words >= GOAL ? " done" : (words > 0 ? " filled" : "")) + (k === todayK ? " today" : "");
+    b.style.height = h + "px";
+    b.setAttribute("role", "listitem");
+    b.setAttribute("aria-label", shortDate(k) + " — " + words + " words" + (words >= GOAL ? ", done" : ""));
+    b.title = shortDate(k) + " — " + words + " words";
+    if(e && e.text){
+      b.setAttribute("data-view", k);
+      b.addEventListener("click", function(ev){
+        saveNow();
+        viewK = ev.currentTarget.getAttribute("data-view");
+        renderView();
+        // Move focus to the (now read-only) page so screen readers announce the
+        // view change, and so focus isn't dropped to <body> when saveNow's
+        // renderHistory() rebuilds this very button.
+        page.focus();
+        window.scrollTo({top: 0, behavior: reduce ? "auto" : "smooth"});
+      });
+    } else {
+      b.disabled = true;
+    }
+    grid.appendChild(b);
+  }
+  document.getElementById("legendStart").textContent = shortDate(keyOffset(DAYS - 1));
+
+  var total = 0, pages = 0;
+  for(var k2 in entries){
+    if(Object.prototype.hasOwnProperty.call(entries, k2)){
+      total += entries[k2].words || 0;
+      if((entries[k2].words || 0) >= GOAL) pages++;
+    }
+  }
+  document.getElementById("statTotal").textContent = total.toLocaleString("en-US");
+  document.getElementById("statPages").textContent = pages;
+  document.getElementById("statBest").textContent = bestStreak();
+}
+
+/* ---------- boot ---------- */
+renderView();
+renderStreak();
+renderHistory();
+// quietly confirm storage works at all
+persist();
+if(window.matchMedia("(pointer:fine)").matches) page.focus();
+
+})();
+</script>
+</body>
+</html>
